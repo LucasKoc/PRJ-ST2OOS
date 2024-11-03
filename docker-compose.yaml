@@ -6,7 +6,6 @@ version: '3.8'
 
 services:
   database-api:
-    # image: 450666049652775641901333182796/prjst2oos-database:stable
     image: prjst2oos-database-api:stable
     build:
       context: ./database-api
@@ -39,8 +38,6 @@ services:
         max_attempts: 3
         window: 10s
   api:
-    # Image for the backend - Pull from Docker Hub
-    # image: 450666049652775641901333182796/prjst2oos-api:stable
     image: prjst2oos-api:stable
     build:
       context: ./api
@@ -77,8 +74,6 @@ services:
         max_attempts: 3
         window: 10s
   frontend:
-    # Image for the frontend - Pull from Docker Hub
-    # image: 450666049652775641901333182796/prjst2oos-frontend:stable
     image: prjst2oos-frontend:stable
     build:
       context: ./client
@@ -101,8 +96,6 @@ services:
         max_attempts: 3
         window: 10s
   database-grpc:
-    # Image for the gRPC server - Pull from Docker Hub
-    # image: 450666049652775641901333182796/prjst2oos-database-grpc:stable
     image: prjst2oos-database-grpc:stable
     build:
       context: ./database-grpc
@@ -135,8 +128,6 @@ services:
         max_attempts: 3
         window: 10s
   grpc:
-    # Image for the gRPC server - Pull from Docker Hub
-    # image: 450666049652775641901333182796/prjst2oos-grpc:stable
     image: prjst2oos-grpc:stable
     build:
       context: ./grpc
