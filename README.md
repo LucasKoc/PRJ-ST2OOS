@@ -148,6 +148,11 @@ To interact with the gRPC service, you can use client in `grpc` folder and run t
 python client.py
 ```
 
+Example:<br>
+![gRPC](https://raw.githubusercontent.com/LucasKoc/PRJ-ST2OOS/refs/heads/main/ressources/Screenshot%202024-11-03%20at%2018.31.58.png)<br>
+Example after insertion (also contain mockup data on initialization):<br>
+![gRPC](https://raw.githubusercontent.com/LucasKoc/PRJ-ST2OOS/refs/heads/main/ressources/Screenshot%202024-11-03%20at%2018.32.34.png)<br>
+
 ### Authors
 
 - KOCOGLU Lucas
