@@ -1,0 +1,6 @@
+grpcio
+grpcio-tools
+pymongo
+protobuf
+grpcio-testing
+pytest

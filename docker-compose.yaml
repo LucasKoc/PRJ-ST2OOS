@@ -5,11 +5,11 @@
 version: '3.8'
 
 services:
-  database:
+  database-api:
     # image: 450666049652775641901333182796/prjst2oos-database:stable
-    image: prjst2oos-database:stable
+    image: prjst2oos-database-api:stable
     build:
-      context: ./database
+      context: ./database-api
       dockerfile: Dockerfile
     container_name: ${POSTGRES_CONTAINER_NAME}
     environment:
@@ -23,7 +23,7 @@ services:
       - POSTGRES_PORT=${POSTGRES_PORT}
       # Volumes for the backend - To save PostgreSQL data
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db-api-data:/var/lib/postgresql/data
     ports:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     networks:
@@ -65,7 +65,7 @@ services:
     networks:
       - prjst2oos-network
     depends_on:
-      - database
+      - database-api
     deploy:
       resources:
         limits:
@@ -76,8 +76,6 @@ services:
         delay: 5s
         max_attempts: 3
         window: 10s
-
-  # Service for the frontend - React App
   frontend:
     # Image for the frontend - Pull from Docker Hub
     # image: 450666049652775641901333182796/prjst2oos-frontend:stable
@@ -102,6 +100,73 @@ services:
         delay: 5s
         max_attempts: 3
         window: 10s
+  database-grpc:
+    # Image for the gRPC server - Pull from Docker Hub
+    # image: 450666049652775641901333182796/prjst2oos-database-grpc:stable
+    image: prjst2oos-database-grpc:stable
+    build:
+      context: ./database-grpc
+      dockerfile: Dockerfile
+    # Container name
+    container_name: ${GRPC_MONGODB_CONTAINER_NAME}
+    # Environment variables for gRPC
+    environment:
+      - GRPC_MONGODB_USER=${GRPC_MONGODB_USER}
+      - GRPC_MONGODB_PASSWORD=${GRPC_MONGODB_PASSWORD}
+      - GRPC_MONGODB_DATABASE=${GRPC_MONGODB_DATABASE}
+      - GRPC_MONGODB_HOST=${GRPC_MONGODB_HOST}
+      - GRPC_MONGODB_PORT=${GRPC_MONGODB_PORT}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    ports:
+      - "${GRPC_MONGODB_PORT}:${GRPC_MONGODB_PORT}"
+    networks:
+      - prjst2oos-network
+    volumes:
+      - db-grpc-data:/data/db
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 10s
+  grpc:
+    # Image for the gRPC server - Pull from Docker Hub
+    # image: 450666049652775641901333182796/prjst2oos-grpc:stable
+    image: prjst2oos-grpc:stable
+    build:
+      context: ./grpc
+      dockerfile: Dockerfile
+    # Container name
+    container_name: ${GRPC_CONTAINER_NAME}
+    # Environment variables for gRPC
+    environment:
+      - GRPC_PORT=${GRPC_PORT}
+      - GRPC_MONGODB_HOST=${GRPC_MONGODB_CONTAINER_NAME}
+      - GRPC_MONGODB_PORT=${GRPC_MONGODB_PORT}
+      - GRPC_MONGODB_USER=${GRPC_MONGODB_USER}
+      - GRPC_MONGODB_PASSWORD=${GRPC_MONGODB_PASSWORD}
+      - GRPC_MONGODB_DATABASE=${GRPC_MONGODB_DATABASE}
+    ports:
+      - "${GRPC_PORT}:${GRPC_PORT}"
+    networks:
+      - prjst2oos-network
+    depends_on:
+      - database-grpc
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 10s
 
 # Networks for the services - For communication between services
 networks:
@@ -110,4 +175,5 @@ networks:
 
 # Volumes for the services
 volumes:
-  db-data: {} # No shared data, used for data persistence if container is removed
+  db-api-data: {}
+  db-grpc-data: {}

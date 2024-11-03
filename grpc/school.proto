@@ -1,0 +1,161 @@
+// command: python3.12 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. school.proto
+syntax = "proto3";
+
+package school;
+
+import "google/protobuf/empty.proto";
+
+service StudentService {
+    rpc AddStudent(AddStudentRequest) returns (AddStudentResponse) {}
+    rpc GetStudent(GetStudentRequest) returns (GetStudentResponse) {}
+    rpc GetStudents(google.protobuf.Empty) returns (GetStudentsResponse) {}
+}
+
+service TeacherService {
+    rpc AddTeacher(AddTeacherRequest) returns (AddTeacherResponse) {}
+    rpc GetTeacher(GetTeacherRequest) returns (GetTeacherResponse) {}
+    rpc GetTeachers(google.protobuf.Empty) returns (GetTeachersResponse) {}
+}
+
+service CourseService {
+    rpc AddCourse(AddCourseRequest) returns (AddCourseResponse) {}
+    rpc GetCourse(GetCourseRequest) returns (GetCourseResponse) {}
+    rpc GetCourses(google.protobuf.Empty) returns (GetCoursesResponse) {}
+}
+
+service EnrollmentService {
+    rpc EnrollStudent(EnrollStudentRequest) returns (EnrollStudentResponse) {}
+    rpc GetEnrollmentsOfStudent(GetEnrollmentsOfStudentRequest) returns (GetEnrollmentsOfStudentResponse) {}
+    rpc GetEnrollments(google.protobuf.Empty) returns (GetEnrollmentsResponse) {}
+}
+
+/*
+ * Student messages
+ */
+message AddStudentRequest {
+  int32 student_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string school_email = 4;
+  string phone = 5;
+}
+
+message AddStudentResponse {
+  int32 student_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string school_email = 4;
+  string phone = 5;
+}
+
+message GetStudentRequest {
+  int32 student_id = 1;
+}
+
+message GetStudentResponse {
+  int32 student_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string school_email = 4;
+  string phone = 5;
+}
+
+message GetStudentsResponse {
+  repeated GetStudentResponse students = 1;
+}
+
+/*
+ * Teacher messages
+ */
+message AddTeacherRequest {
+  string teacher_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string school_email = 4;
+  string phone = 5;
+  string speciality = 6;
+}
+
+message AddTeacherResponse {
+  string teacher_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string school_email = 4;
+  string phone = 5;
+  string speciality = 6;
+}
+
+message GetTeacherRequest {
+  string teacher_id = 1;
+}
+
+message GetTeacherResponse {
+  string teacher_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string school_email = 4;
+  string phone = 5;
+  string speciality = 6;
+}
+
+message GetTeachersResponse {
+  repeated GetTeacherResponse teachers = 1;
+}
+
+/*
+ * Course messages
+ */
+
+message AddCourseRequest {
+  string course_id = 1;
+  string course_name = 2;
+  string teacher_id = 3;
+}
+
+message AddCourseResponse {
+  string course_id = 1;
+  string course_name = 2;
+  string teacher_id = 3;
+}
+
+message GetCourseRequest {
+  string course_id = 1;
+}
+
+message GetCourseResponse {
+  string course_id = 1;
+  string course_name = 2;
+  string teacher_id = 3;
+}
+
+message GetCoursesResponse {
+  repeated GetCourseResponse courses = 1;
+}
+
+/*
+ * Enrollment messages
+ */
+
+message EnrollStudentRequest {
+  int32 student_id = 1;
+  string course_id = 2;
+  int32 grade = 3;
+}
+
+message EnrollStudentResponse {
+  int32 student_id = 1;
+  string course_id = 2;
+  int32 grade = 3;
+}
+
+message GetEnrollmentsOfStudentRequest {
+  int32 student_id = 1;
+}
+
+message GetEnrollmentsOfStudentResponse {
+  repeated EnrollStudentResponse enrollments = 1;
+}
+
+message GetEnrollmentsResponse {
+  repeated EnrollStudentResponse enrollments = 1;
+}
