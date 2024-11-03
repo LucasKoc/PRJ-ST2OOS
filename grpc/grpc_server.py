@@ -6,6 +6,14 @@ import school_pb2_grpc
 import os
 
 # MongoDB connection details with corrected authSource
+if not os.getenv("GRPC_MONGODB_USER") or not os.getenv("GRPC_MONGODB_PASSWORD") or not os.getenv("GRPC_MONGODB_HOST") or not os.getenv("GRPC_MONGODB_PORT") or not os.getenv("GRPC_MONGODB_DATABASE"):
+    dotenv_path = os.path.join(os.path.dirname(__file__), "../.env")
+    if os.path.exists(dotenv_path):
+        from dotenv import load_dotenv
+        load_dotenv(dotenv_path)
+    else:
+        raise ValueError("No .env file found")
+
 mongo_client = pymongo.MongoClient(
     f"mongodb://{os.getenv('GRPC_MONGODB_USER')}:{os.getenv('GRPC_MONGODB_PASSWORD')}@"
     f"{os.getenv('GRPC_MONGODB_HOST')}:{os.getenv('GRPC_MONGODB_PORT')}/"
